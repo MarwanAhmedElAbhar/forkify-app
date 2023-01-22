@@ -1,33 +1,51 @@
 import { Fraction } from "fractional";
-
 class RecipeView {
-    #parentElement = document.querySelector('.recipe');
+  #parentElement = document.querySelector('.recipe');
 
-    #data;
+  #data;
 
-    render(data) {
-        this.#data = data
-        const markup = this.#generateMarkup();
-        this.#clear()
-        this.#parentElement.insertAdjacentHTML('afterbegin', markup)
-    }
+  render(data) {
+    this.#data = data
+    const markup = this.#generateMarkup();
+    this.#clear()
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup)
+  }
 
-    #clear() {
-        this.#parentElement.innerHTML = ''
-    }
+  #clear() {
+    this.#parentElement.innerHTML = ''
+  }
 
-    renderSpinner = function () {
-        const markup = `<div class="spinner">
+  addHandlerRender(handler) {
+    window.addEventListener('hashchange', handler)
+    window.addEventListener('load', handler)
+
+  }
+
+  renderSpinner() {
+    const markup = `<div class="spinner">
         <svg>
           <use href="src/img/icons.svg#icon-loader"></use>
         </svg>
       </div>`
-        this.#parentElement.innerHTML = ''
-        this.#parentElement.insertAdjacentHTML('afterbegin', markup)
-    }
+      this.#clear()
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup)
+  }
 
-    #generateMarkup() {
-        return `
+  renderError(msg) {
+    const markup = `<div class="error">
+    <div>
+      <svg>
+        <use href="src/img/icons.svg#icon-alert-triangle"></use>
+      </svg>
+    </div>
+    <p>${msg}</p>
+  </div>`
+  this.#clear()
+  this.#parentElement.insertAdjacentHTML('afterbegin', markup)
+  }
+
+  #generateMarkup() {
+    return `
         <figure class="recipe__fig">
           <img src="${this.#data.image}" alt="Tomato" class="recipe__img" />
           <h1 class="recipe__title">
@@ -102,10 +120,10 @@ class RecipeView {
           </a>
         </div>
         `
-    }
+  }
 
-    #generateMarkupIngredient(ing) {
-        return `<li class="recipe__ingredient">
+  #generateMarkupIngredient(ing) {
+    return `<li class="recipe__ingredient">
             <svg class="recipe__icon">
               <use href="src/img/icons.svg#icon-check"></use>
             </svg>
@@ -115,7 +133,7 @@ class RecipeView {
               ${ing.description}
             </div>
           </li>`
-    }
+  }
 }
 
 export default new RecipeView()
