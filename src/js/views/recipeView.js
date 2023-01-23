@@ -1,8 +1,10 @@
-import { Fraction } from "fractional";
+import { Fracty } from "fracty";
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
 
   #data;
+  #errorMessage = "We could not find that recipe. Please try another one"
+  #message = ""
 
   render(data) {
     this.#data = data
@@ -31,7 +33,7 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', markup)
   }
 
-  renderError(msg) {
+  renderError(msg = this.#errorMessage) {
     const markup = `<div class="error">
     <div>
       <svg>
@@ -39,6 +41,19 @@ class RecipeView {
       </svg>
     </div>
     <p>${msg}</p>
+  </div>`
+  this.#clear()
+  this.#parentElement.insertAdjacentHTML('afterbegin', markup)
+  }
+
+  renderMessage(msg = this.#message) {
+    const markup = `<div class="message">
+    <div>
+      <svg>
+        <use href="src/img/icons.svg#icon-smile"></use>
+      </svg>
+    </div>
+    <p>S${msg}</p>
   </div>`
   this.#clear()
   this.#parentElement.insertAdjacentHTML('afterbegin', markup)
@@ -127,7 +142,7 @@ class RecipeView {
             <svg class="recipe__icon">
               <use href="src/img/icons.svg#icon-check"></use>
             </svg>
-            <div class="recipe__quantity">${ing.quantity ? new Fraction(ing.quantity).toString() : ''}</div>
+            <div class="recipe__quantity">${ing.quantity ? new Fracty(ing.quantity).toString() : ''}</div>
             <div class="recipe__description">
               <span class="recipe__unit">${ing.unit}</span>
               ${ing.description}
