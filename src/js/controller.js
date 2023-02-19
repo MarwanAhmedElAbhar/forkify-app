@@ -4,7 +4,9 @@ import * as model from "./model"
 import recipeView from './views/recipeView';
 import searchView from './views/searchView';
 import resultsView from './views/resultsView';
+import bookmarksView from './views/bookmarksView';
 import paginationView from './views/paginationView';
+import addRecipeView from './views/addRecipeView';
 
 
 
@@ -24,6 +26,7 @@ const controlRecipes = async function () {
     recipeView.renderSpinner()
 
     resultsView.update(model.getSearchResultsPage())
+    bookmarksView.update(model.state.bookmarks)
 
     await model.loadRecipe(id)
 
@@ -70,14 +73,30 @@ const controlAddBookmark = function () {
     model.deleteBookmark(model.state.recipe.id)
   recipeView.update(model.state.recipe)
 
+  bookmarksView.render(model.state.bookmarks)
+}
+
+const controlBookmarks = function() {
+  bookmarksView.render(model.state.bookmarks)
+}
+
+const controlAddRecipe = async function(newRecipe) {
+  try {
+   await model.uploadRecipe(newRecipe)
+
+  } catch(e) {
+    addRecipeView.renderError(e.message)
+  }
 }
 
 const init = function () {
+  bookmarksView.addHandlerRender(controlBookmarks)
   recipeView.addHandlerRender(controlRecipes)
   recipeView.addHandlerUpdateServings(controlServings)
   recipeView.addHandlerAddBookmark(controlAddBookmark)
   searchView.addHandlerSearch(controlSearchResults)
   paginationView.addHandlerClick(controlPagination)
+  addRecipeView.addHandlerUpload(controlAddRecipe)
 }
 init()
 
