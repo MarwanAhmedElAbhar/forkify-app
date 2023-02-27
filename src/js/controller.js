@@ -8,15 +8,6 @@ import bookmarksView from './views/bookmarksView';
 import paginationView from './views/paginationView';
 import addRecipeView from './views/addRecipeView';
 
-
-
-
-// https://forkify-api.herokuapp.com/v2
-
-///////////////////////////////////////
-
-
-
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1)
@@ -76,15 +67,26 @@ const controlAddBookmark = function () {
   bookmarksView.render(model.state.bookmarks)
 }
 
-const controlBookmarks = function() {
+const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks)
 }
 
-const controlAddRecipe = async function(newRecipe) {
+const controlAddRecipe = async function (newRecipe) {
   try {
-   await model.uploadRecipe(newRecipe)
+    addRecipeView.renderSpinner()
+    await model.uploadRecipe(newRecipe)
 
-  } catch(e) {
+    recipeView.render(model.state.recipe)
+
+    bookmarksView.render(model.state.bookmarks)
+
+    window.history.pushState(null, "", `#${model.state.recipe.id}`)
+
+    setTimeout(function () {
+      addRecipeView.toggleWindow()
+    }, 2500)
+
+  } catch (e) {
     addRecipeView.renderError(e.message)
   }
 }
