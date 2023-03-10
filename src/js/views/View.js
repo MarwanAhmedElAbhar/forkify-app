@@ -12,7 +12,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup)
   }
 
-  update() {
+  update(data) {
     this._data = data
     const newMarkup = this._generateMarkup()
 
@@ -21,9 +21,9 @@ export default class View {
     const curElements = Array.from(this._parentElement.querySelectorAll('*'))
 
     newElements.forEach((newEl, i) => {
-      const curEl = curElements(i)
+      const curEl = curElements[i]
 
-      if (!newEl.isEqualNode(curEl) && newEl.firstChild.nodeValue.trim() !== '') {
+      if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== '') {
         curEl.textContent = newEl.textContent
       }
 
