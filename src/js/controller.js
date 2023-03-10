@@ -15,11 +15,12 @@ const controlRecipes = async function () {
     if (!id) return;
 
     recipeView.renderSpinner()
+    await model.loadRecipe(id)
+
 
     resultsView.update(model.getSearchResultsPage())
     bookmarksView.update(model.state.bookmarks)
 
-    await model.loadRecipe(id)
 
     recipeView.render(model.state.recipe)
 
@@ -58,10 +59,11 @@ const controlServings = function (newServings) {
 }
 
 const controlAddBookmark = function () {
-  if (!model.state.recipe.bookmarked)
+  if (!model.state.recipe.bookmarked) 
     model.addBookmark(model.state.recipe)
-  else
+   else 
     model.deleteBookmark(model.state.recipe.id)
+   
   recipeView.update(model.state.recipe)
 
   bookmarksView.render(model.state.bookmarks)
@@ -101,7 +103,4 @@ const init = function () {
   addRecipeView.addHandlerUpload(controlAddRecipe)
 }
 init()
-
-
-// ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, controlRecipes));
 
