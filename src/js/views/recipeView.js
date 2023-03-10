@@ -1,4 +1,4 @@
-import { Fracty } from "fracty";
+import fracty  from "fracty";
 import View from "./View";
 class RecipeView extends View {
   _parentElement = document.querySelector('.recipe');
@@ -22,7 +22,7 @@ class RecipeView extends View {
 
   addHandlerAddBookmark(handler) {
     this._parentElement.addEventListener('click', function (e) {
-      const btn = e.target.closest('.btn-bookmark')
+      const btn = e.target.closest('.btn--bookmark')
       if (!btn) return;
       handler()
     })
@@ -106,7 +106,7 @@ class RecipeView extends View {
             <svg class="recipe__icon">
               <use href="src/img/icons.svg#icon-check"></use>
             </svg>
-            <div class="recipe__quantity">${ing.quantity ? new Fracty(ing.quantity).toString() : ''}</div>
+            <div class="recipe__quantity">${ing.quantity ? fracty(ing.quantity).toString() : ''}</div>
             <div class="recipe__description">
               <span class="recipe__unit">${ing.unit}</span>
               ${ing.description}
