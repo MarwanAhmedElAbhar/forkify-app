@@ -73,7 +73,7 @@ export const createRecipeObject = function (data) {
         publisher: recipe.publisher,
         cooking_time: +recipe.cookingTime,
         servings: +recipe.servings,
-        ingredients,
+        ingredients: recipe.ingredients,
         ...(recipe.key && {key: recipe.key})
     }
 }
